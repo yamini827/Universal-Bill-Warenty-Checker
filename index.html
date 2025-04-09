@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Warranty & Bill Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> Universal Warranty & Bill Tracker</h1>
+                <div class="user-info">
+                    <div class="notifications">
+                        <button id="notifications-btn" class="notifications-btn">
+                            <i class="fas fa-bell"></i>
+                            <span id="notification-count" class="notification-count">0</span>
+                        </button>
+                        <div id="notifications-dropdown" class="notifications-dropdown">
+                            <div class="notifications-header">
+                                <h3>Notifications</h3>
+                                <button id="clear-notifications" class="clear-btn">Clear All</button>
+                            </div>
+                            <div id="notifications-list" class="notifications-list">
+                                <!-- Notifications will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                    <span id="user-name"></span>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            <p>Keep track of your warranties and bills in one place</p>
+        </header>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="warranties">Warranties</button>
+                <button class="tab-btn" data-tab="bills">Bills</button>
+                <button class="tab-btn" data-tab="files">Files</button>
+                <button class="tab-btn" data-tab="feedback">Feedback</button>
+            </div>
+
+            <div class="tab-content active" id="warranties">
+                <div class="add-item-form">
+                    <h2>Add New Warranty</h2>
+                    <form id="warranty-form">
+                        <div class="form-group">
+                            <input type="text" id="product-name" placeholder="Product Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="warranty-provider" placeholder="Warranty Provider" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Purchase Date & Time</label>
+                            <input type="datetime-local" id="purchase-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Warranty End Date & Time</label>
+                            <input type="datetime-local" id="warranty-end" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Reminder Settings</label>
+                            <div class="reminder-settings">
+                                <input type="number" id="warranty-reminder-days" placeholder="Days before" min="1" value="7">
+                                <span>days before expiry</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="warranty-notes" placeholder="Additional Notes"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Add Warranty</button>
+                    </form>
+                </div>
+
+                <div class="items-list" id="warranties-list">
+                    <!-- Warranties will be displayed here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="bills">
+                <div class="add-item-form">
+                    <h2>Add New Bill</h2>
+                    <form id="bill-form">
+                        <div class="form-group">
+                            <input type="text" id="bill-name" placeholder="Bill Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="bill-amount" placeholder="Amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Bill Date & Time</label>
+                            <input type="datetime-local" id="bill-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date & Time</label>
+                            <input type="datetime-local" id="due-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Reminder Settings</label>
+                            <div class="reminder-settings">
+                                <input type="number" id="bill-reminder-days" placeholder="Days before" min="1" value="3">
+                                <span>days before due date</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select id="bill-status">
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">Add Bill</button>
+                    </form>
+                </div>
+
+                <div class="items-list" id="bills-list">
+                    <!-- Bills will be displayed here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="files">
+                <div class="files-section">
+                    <div class="add-file-form">
+                        <h2>Upload New File</h2>
+                        <form id="file-upload-form">
+                            <div class="form-group">
+                                <input type="text" id="file-name" placeholder="File Name" required>
+                            </div>
+                            <div class="form-group">
+                                <select id="file-type" required>
+                                    <option value="warranty">Warranty Document</option>
+                                    <option value="bill">Bill Document</option>
+                                    <option value="other">Other Document</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload File</label>
+                                <div class="file-upload-container">
+                                    <div class="upload-options">
+                                        <label for="file-input" class="upload-btn">
+                                            <i class="fas fa-file-upload"></i> Choose File
+                                        </label>
+                                        <label for="camera-input" class="camera-btn">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </label>
+                                    </div>
+                                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                                    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+                                    <div id="image-preview" class="image-preview">
+                                        <img id="preview-img" src="" alt="Preview" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="file-description" placeholder="File Description"></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Upload File</button>
+                        </form>
+                    </div>
+
+                    <div class="files-list">
+                        <h2>Your Files</h2>
+                        <div class="files-grid" id="files-list">
+                            <!-- Files will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="feedback">
+                <div class="feedback-section">
+                    <div class="add-feedback-form">
+                        <h2>Share Your Feedback</h2>
+                        <form id="feedback-form">
+                            <div class="form-group">
+                                <input type="text" id="feedback-title" placeholder="Feedback Title" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="feedback-content" placeholder="Your Feedback" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <select id="feedback-rating" required>
+                                    <option value="5">5 Stars - Excellent</option>
+                                    <option value="4">4 Stars - Very Good</option>
+                                    <option value="3">3 Stars - Good</option>
+                                    <option value="2">2 Stars - Fair</option>
+                                    <option value="1">1 Star - Poor</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="submit-btn">Submit Feedback</button>
+                        </form>
+                    </div>
+
+                    <div class="feedback-list">
+                        <h2>Recent Feedback</h2>
+                        <div id="feedback-list">
+                            <!-- Feedback will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
